@@ -1,4 +1,4 @@
-package co.edu.unbosque.backend.model;
+package co.edu.unbosque.backend.dto;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -16,27 +16,25 @@ import jakarta.persistence.Table;
  */
 @Entity
 @Table(name = "item")
-public class Item {
+public class LacteoDTO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String nombre;
-	private String descripcion;
-	private Double precio;
 	private Integer cantidad;
-	private LocalDate fecha;
+	private Double precio;
+	private String urlImagen;
 
-	public Item() {
+	public LacteoDTO() {
 	}
 
-	public Item(String nombre, String descripcion, Double precio, Integer cantidad, LocalDate fecha) {
+	public LacteoDTO(String nombre, Double precio, Integer cantidad, String urlImagen) {
 		this.nombre = nombre;
-		this.descripcion = descripcion;
 		this.precio = precio;
 		this.cantidad = cantidad;
-		this.fecha = fecha;
+		this.urlImagen = urlImagen;
 	}
 
 	public Long getId() {
@@ -55,14 +53,6 @@ public class Item {
 		this.nombre = nombre;
 	}
 
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
 	public Double getPrecio() {
 		return precio;
 	}
@@ -79,12 +69,12 @@ public class Item {
 		this.cantidad = cantidad;
 	}
 
-	public LocalDate getFecha() {
-		return fecha;
+	public String getUrlImagen() {
+		return urlImagen;
 	}
 
-	public void setFecha(LocalDate fecha) {
-		this.fecha = fecha;
+	public void setUrlImagen(String urlImagen) {
+		this.urlImagen = urlImagen;
 	}
 
 	@Override
@@ -98,13 +88,14 @@ public class Item {
 			return true;
 		if (obj == null || getClass() != obj.getClass())
 			return false;
-		return Objects.equals(id, ((Item) obj).id);
+		return Objects.equals(id, ((LacteoDTO) obj).id);
 	}
 
 	@Override
 	public String toString() {
-		return "Item [id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", precio=" + precio
-				+ ", cantidad=" + cantidad + ", fecha=" + fecha + "]";
+		return "Lacteos [id=" + id + ", nombre=" + nombre + ", cantidad=" + cantidad + ", precio=" + precio
+				+ ", urlImagen=" + urlImagen + "]";
 	}
 
 }
+
