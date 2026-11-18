@@ -2,17 +2,7 @@ package co.edu.unbosque.backend.dto;
 
 import java.util.Objects;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name = "item")
 public class CarneDTO {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String nombre;
@@ -86,7 +76,7 @@ public class CarneDTO {
 
 	@Override
 	public String toString() {
-		return "Lacteos [id=" + id + ", nombre=" + nombre + ", cantidad=" + cantidad + ", precio=" + precio
+		return "CarneDTO [id=" + id + ", nombre=" + nombre + ", cantidad=" + cantidad + ", precio=" + precio
 				+ ", urlImagen=" + urlImagen + "]";
 	}
 

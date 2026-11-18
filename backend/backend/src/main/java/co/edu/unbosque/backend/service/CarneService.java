@@ -47,9 +47,14 @@ public class CarneService implements CRUDOperation<CarneDTO> {
 		return 0;
 	}
 
-	
+	/** Busqueda por nombre exacto (con datos cifrados no se puede buscar por partes). */
+	public List<CarneDTO> searchByNombre(String nombre) {
+		return itemRepo.findByNombre(AESUtil.encrypt(nombre)).stream().map(this::toDTO).toList();
+	}
 
-	
+	public CarneDTO getById(Long id) {
+		return itemRepo.findById(id).map(this::toDTO).orElse(null);
+	}
 
 	@Override
 	public int deleteById(Long id) {
@@ -61,14 +66,14 @@ public class CarneService implements CRUDOperation<CarneDTO> {
 		return 1;
 	}
 
-	/**
-	 * @return 0 actualizado, 1 datos invalidos, 2 no encontrado
-	 */
 	@Override
 	public List<CarneDTO> getAll() {
 		return itemRepo.findAll().stream().map(this::toDTO).toList();
 	}
-	
+
+	/**
+	 * @return 0 actualizado, 1 datos invalidos, 2 no encontrado
+	 */
 	@Override
 	public int updateById(Long id, CarneDTO newData) {
 		Optional<Carne> found = itemRepo.findById(id);

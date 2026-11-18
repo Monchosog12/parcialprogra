@@ -9,7 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "item")
+@Table(name = "carne")
 public class Carne {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -86,7 +86,7 @@ public class Carne {
 
 	@Override
 	public String toString() {
-		return "Lacteos [id=" + id + ", nombre=" + nombre + ", cantidad=" + cantidad + ", precio=" + precio
+		return "Carne [id=" + id + ", nombre=" + nombre + ", cantidad=" + cantidad + ", precio=" + precio
 				+ ", urlImagen=" + urlImagen + "]";
 	}
 
