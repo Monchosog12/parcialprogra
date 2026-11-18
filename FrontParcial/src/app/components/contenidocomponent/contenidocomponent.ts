@@ -1,14 +1,32 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Backservice } from '../../services/backservice';
+import { Item } from '../../models/itemmodel';
 
 @Component({
   selector: 'app-contenidocomponent',
   standalone: true,
-  imports: [RouterLink],
   templateUrl: './contenidocomponent.html',
+  styleUrl: './contenidocomponent.css',
 })
-export class Contenidocomponent {
-  titulo = 'Bienvenido a nuestra aplicación';
+export class Contenidocomponent implements OnInit {
+  items: Item[] = [];
 
-  descripcion = 'Gestiona tu cuenta de manera sencilla y segura.';
+  constructor(private backservice: Backservice) {}
+
+  ngOnInit(): void {
+    this.listar();
+  }
+
+  listar(): void {
+    this.backservice.getAll().subscribe({
+      next: (data) => {
+        this.items = data || [];
+        console.log(data);
+      },
+
+      error: (error) => {
+        console.log(error);
+      },
+    });
+  }
 }
