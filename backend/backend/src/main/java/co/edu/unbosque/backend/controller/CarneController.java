@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.unbosque.backend.dto.CarneDTO;
 import co.edu.unbosque.backend.service.CarneService;
+import co.edu.unbosque.backend.service.ExternalHTTPRequestHandler;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -36,6 +37,8 @@ public class CarneController {
 
 	@Autowired
 	private CarneService itemServ;
+	
+	
 
 	public CarneController() {
 	}
@@ -50,7 +53,7 @@ public class CarneController {
 
 	@GetMapping("/getall")
 	ResponseEntity<List<CarneDTO>> getAll() {
-		List<CarneDTO> items = itemServ.getAll();
+		List<CarneDTO> items =itemServ.getAll();
 		if (items.isEmpty()) {
 			return new ResponseEntity<>(items, HttpStatus.NO_CONTENT);
 		}
