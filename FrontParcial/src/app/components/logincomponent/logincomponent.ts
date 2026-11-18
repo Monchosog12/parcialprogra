@@ -1,27 +1,44 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '../../services/authservice';
 
 @Component({
   selector: 'app-logincomponent',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [FormsModule],
   templateUrl: './logincomponent.html',
   styleUrl: './logincomponent.css',
 })
 export class Logincomponent {
-  loginForm = new FormGroup({
-    correo: new FormControl('', [Validators.required, Validators.email]),
+  username = '';
+  password = '';
 
-    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-  });
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {}
 
-  iniciarSesion() {
-    if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched();
-      return;
-    }
+  iniciarSesion(): void {
+    const datos = {
+      username: this.username,
+      password: this.password,
+    };
 
-    console.log(this.loginForm.value);
+    this.authService.login(datos).subscribe({
+      next: (respuesta) => {
+        console.log('Login exitoso');
+        console.log('Token:', respuesta.token);
+        console.log('Rol:', respuesta.roles);
+
+        this.router.navigate(['/contenido']);
+      },
+
+      error: (error) => {
+        console.log('Error al iniciar sesión', error);
+        alert('Usuario o contraseña incorrectos');
+      },
+    });
   }
 }
