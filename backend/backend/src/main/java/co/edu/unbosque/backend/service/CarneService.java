@@ -8,8 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.unbosque.backend.dto.CarneDTO;
+import co.edu.unbosque.backend.model.Carne;
 import co.edu.unbosque.backend.model.Lacteo;
-import co.edu.unbosque.backend.repository.ItemRepository;
+import co.edu.unbosque.backend.repository.CarneRepository;
 import co.edu.unbosque.backend.util.AESUtil;
 
 /**
@@ -24,7 +25,7 @@ import co.edu.unbosque.backend.util.AESUtil;
 public class CarneService implements CRUDOperation<CarneDTO> {
 
 	@Autowired
-	private ItemRepository itemRepo;
+	private CarneRepository itemRepo;
 
 	@Autowired
 	private ModelMapper modelMapper;
@@ -40,7 +41,7 @@ public class CarneService implements CRUDOperation<CarneDTO> {
 		if (data.getNombre() == null || data.getNombre().isBlank()) {
 			return 1;
 		}
-		Lacteo entity = modelMapper.map(data, Lacteo.class);
+		Carne entity = modelMapper.map(data, Carne.class);
 		entity.setId(null); // el id lo genera la BD
 		entity.setNombre(AESUtil.encrypt(data.getNombre()));
 		itemRepo.save(entity);
@@ -63,7 +64,7 @@ public class CarneService implements CRUDOperation<CarneDTO> {
 
 	@Override
 	public int deleteById(Long id) {
-		Optional<Lacteo> found = itemRepo.findById(id);
+		Optional<Carne> found = itemRepo.findById(id);
 		if (found.isPresent()) {
 			itemRepo.delete(found.get());
 			return 0;
@@ -76,14 +77,14 @@ public class CarneService implements CRUDOperation<CarneDTO> {
 	 */
 	@Override
 	public int updateById(Long id, CarneDTO newData) {
-		Optional<Lacteo> found = itemRepo.findById(id);
+		Optional<Carne> found = itemRepo.findById(id);
 		if (found.isEmpty()) {
 			return 2;
 		}
 		if (newData.getNombre() == null || newData.getNombre().isBlank()) {
 			return 1;
 		}
-		Lacteo temp = found.get();
+		Carne temp = found.get();
 		temp.setNombre(AESUtil.encrypt(newData.getNombre()));
 		temp.setPrecio(newData.getPrecio());
 		temp.setCantidad(newData.getCantidad());
