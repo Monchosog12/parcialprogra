@@ -2,23 +2,11 @@ package co.edu.unbosque.backend.dto;
 
 import java.util.Objects;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
 /**
- * ENTIDAD PLANTILLA. En el parcial: renombrar la clase (ej. Producto, Mascota,
- * Moto...) y cambiar los atributos. Tiene un ejemplo de cada tipo comun
- * (String, Double, Integer, LocalDate) para copiar el patron.
+ * DTO de Lacteo: mismos nombres de atributos que la entidad (ModelMapper).
  */
-@Entity
-@Table(name = "item")
 public class LacteoDTO {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String nombre;
@@ -92,7 +80,7 @@ public class LacteoDTO {
 
 	@Override
 	public String toString() {
-		return "Lacteos [id=" + id + ", nombre=" + nombre + ", cantidad=" + cantidad + ", precio=" + precio
+		return "LacteoDTO [id=" + id + ", nombre=" + nombre + ", cantidad=" + cantidad + ", precio=" + precio
 				+ ", urlImagen=" + urlImagen + "]";
 	}
 

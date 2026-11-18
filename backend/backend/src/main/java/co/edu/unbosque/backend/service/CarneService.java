@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import co.edu.unbosque.backend.dto.CarneDTO;
 import co.edu.unbosque.backend.model.Carne;
-import co.edu.unbosque.backend.model.Lacteo;
 import co.edu.unbosque.backend.repository.CarneRepository;
 import co.edu.unbosque.backend.util.AESUtil;
 
@@ -48,11 +47,6 @@ public class CarneService implements CRUDOperation<CarneDTO> {
 		return 0;
 	}
 
-	@Override
-	public List<CarneDTO> getAll() {
-		return itemRepo.findAll().stream().map(this::toDTO).toList();
-	}
-
 	/** Busqueda por nombre exacto (con datos cifrados no se puede buscar por partes). */
 	public List<CarneDTO> searchByNombre(String nombre) {
 		return itemRepo.findByNombre(AESUtil.encrypt(nombre)).stream().map(this::toDTO).toList();
@@ -70,6 +64,11 @@ public class CarneService implements CRUDOperation<CarneDTO> {
 			return 0;
 		}
 		return 1;
+	}
+
+	@Override
+	public List<CarneDTO> getAll() {
+		return itemRepo.findAll().stream().map(this::toDTO).toList();
 	}
 
 	/**
@@ -103,10 +102,12 @@ public class CarneService implements CRUDOperation<CarneDTO> {
 	}
 
 	/** Entidad (cifrada) -> DTO (descifrado). */
-	private CarneDTO toDTO(Lacteo entity) {
+	private CarneDTO toDTO(Carne entity) {
 		CarneDTO dto = modelMapper.map(entity, CarneDTO.class);
 		dto.setNombre(AESUtil.decrypt(entity.getNombre()));
 		return dto;
 	}
+
+	
 
 }
