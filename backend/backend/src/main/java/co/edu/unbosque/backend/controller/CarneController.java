@@ -18,29 +18,49 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.unbosque.backend.dto.CarneDTO;
+import co.edu.unbosque.backend.dto.FoodDTO;
 import co.edu.unbosque.backend.service.CarneService;
 import co.edu.unbosque.backend.service.ExternalHTTPRequestHandler;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
- * CONTROLADOR PLANTILLA (CRUD completo protegido con JWT). Al renombrar la
- * entidad cambiar tambien el @RequestMapping("/item") y la regla "/item/**" en
- * SecurityConfig.
+ * CRUD de Carne protegido con JWT + busqueda externa en FoodData Central.
  */
 @RestController
 @RequestMapping("/carne")
 @Transactional
-@Tag(name = "Producto (plantilla)", description = "CRUD de ejemplo para el parcial")
+@Tag(name = "Carne", description = "CRUD de carnes y busqueda en FoodData Central")
 @SecurityRequirement(name = "bearerAuth")
 public class CarneController {
 
 	@Autowired
 	private CarneService itemServ;
-	
-	
 
 	public CarneController() {
+	}
+
+	/**
+	 * Busca carnes por nombre en FoodData Central (USDA). Solo devuelve
+	 * alimentos de categorias de carne. Ej: /carne/external/search?query=beef
+	 */
+	@GetMapping("/external/search")
+	ResponseEntity<List<FoodDTO>> searchExternal(@RequestParam String query,
+			@RequestParam(defaultValue = "10") int pageSize) {
+		if (query.isBlank()) {
+			return new ResponseEntity<>(List.of(), HttpStatus.BAD_REQUEST);
+		}
+		int size = Math.max(1, Math.min(pageSize, 50));
+		try {
+			List<FoodDTO> foods = ExternalHTTPRequestHandler.searchFoods(query, size,
+					ExternalHTTPRequestHandler.CATEGORIAS_CARNE);
+			if (foods.isEmpty()) {
+				return new ResponseEntity<>(foods, HttpStatus.NO_CONTENT);
+			}
+			return new ResponseEntity<>(foods, HttpStatus.ACCEPTED);
+		} catch (RuntimeException e) {
+			return new ResponseEntity<>(List.of(), HttpStatus.BAD_GATEWAY);
+		}
 	}
 
 	@PostMapping(path = "/createjson", consumes = MediaType.APPLICATION_JSON_VALUE)

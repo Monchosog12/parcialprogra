@@ -65,9 +65,6 @@ public class SecurityConfig {
 						.hasAnyRole("USER", "ADMIN")
 						.requestMatchers("/user/**").hasRole("ADMIN")
 
-//						 ===== ENTIDAD PLANTILLA (cambiar /item por el nombre de la entidad) =====
-//						 Cualquier usuario logueado puede todo. Si el parcial pide que solo
-//						 el ADMIN modifique, descomentar estas dos lineas:
 						 .requestMatchers(HttpMethod.GET, "/carne/**").hasAnyRole("USER", "ADMIN")
 						 .requestMatchers("/carne/**").hasRole("ADMIN")
 						.requestMatchers("/carne/**").hasAnyRole("USER", "ADMIN")

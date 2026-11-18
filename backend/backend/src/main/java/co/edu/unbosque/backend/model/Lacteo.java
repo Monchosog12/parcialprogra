@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
  * (String, Double, Integer, LocalDate) para copiar el patron.
  */
 @Entity
-@Table(name = "item")
+@Table(name = "lacteo")
 public class Lacteo {
 
 	@Id
@@ -92,7 +92,7 @@ public class Lacteo {
 
 	@Override
 	public String toString() {
-		return "Lacteos [id=" + id + ", nombre=" + nombre + ", cantidad=" + cantidad + ", precio=" + precio
+		return "Lacteo [id=" + id + ", nombre=" + nombre + ", cantidad=" + cantidad + ", precio=" + precio
 				+ ", urlImagen=" + urlImagen + "]";
 	}
 
