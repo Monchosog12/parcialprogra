@@ -1,6 +1,5 @@
 package co.edu.unbosque.backend.model;
 
-import java.time.LocalDate;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
