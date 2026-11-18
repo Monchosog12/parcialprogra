@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.unbosque.backend.dto.ItemDTO;
-import co.edu.unbosque.backend.service.ItemService;
+import co.edu.unbosque.backend.dto.CarneDTO;
+import co.edu.unbosque.backend.service.CarneService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -28,20 +28,20 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  * SecurityConfig.
  */
 @RestController
-@RequestMapping("/item")
+@RequestMapping("/carne")
 @Transactional
-@Tag(name = "Items (plantilla)", description = "CRUD de ejemplo para copiar en el parcial")
+@Tag(name = "Producto (plantilla)", description = "CRUD de ejemplo para el parcial")
 @SecurityRequirement(name = "bearerAuth")
-public class ItemController {
+public class CarneController {
 
 	@Autowired
-	private ItemService itemServ;
+	private CarneService itemServ;
 
-	public ItemController() {
+	public CarneController() {
 	}
 
 	@PostMapping(path = "/createjson", consumes = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<String> createNewWithJSON(@RequestBody ItemDTO newItem) {
+	ResponseEntity<String> createNewWithJSON(@RequestBody CarneDTO newItem) {
 		if (itemServ.create(newItem) == 0) {
 			return new ResponseEntity<>("Item creado exitosamente", HttpStatus.CREATED);
 		}
@@ -49,8 +49,8 @@ public class ItemController {
 	}
 
 	@GetMapping("/getall")
-	ResponseEntity<List<ItemDTO>> getAll() {
-		List<ItemDTO> items = itemServ.getAll();
+	ResponseEntity<List<CarneDTO>> getAll() {
+		List<CarneDTO> items = itemServ.getAll();
 		if (items.isEmpty()) {
 			return new ResponseEntity<>(items, HttpStatus.NO_CONTENT);
 		}
@@ -59,7 +59,7 @@ public class ItemController {
 
 	/** Busca por nombre exacto (los nombres estan cifrados en la BD). */
 	@GetMapping("/search")
-	ResponseEntity<List<ItemDTO>> search(@RequestParam String nombre) {
+	ResponseEntity<List<CarneDTO>> search(@RequestParam String nombre) {
 		return new ResponseEntity<>(itemServ.searchByNombre(nombre), HttpStatus.ACCEPTED);
 	}
 
@@ -81,16 +81,16 @@ public class ItemController {
 	}
 
 	@GetMapping("/getbyid/{id}")
-	ResponseEntity<ItemDTO> getById(@PathVariable Long id) {
-		ItemDTO found = itemServ.getById(id);
+	ResponseEntity<CarneDTO> getById(@PathVariable Long id) {
+		CarneDTO found = itemServ.getById(id);
 		if (found != null) {
 			return new ResponseEntity<>(found, HttpStatus.ACCEPTED);
 		}
-		return new ResponseEntity<>(new ItemDTO(), HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(new CarneDTO(), HttpStatus.NOT_FOUND);
 	}
 
 	@PutMapping(path = "/updatejson", consumes = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<String> updateWithJSON(@RequestParam Long id, @RequestBody ItemDTO newItem) {
+	ResponseEntity<String> updateWithJSON(@RequestParam Long id, @RequestBody CarneDTO newItem) {
 		int status = itemServ.updateById(id, newItem);
 		return switch (status) {
 		case 0 -> new ResponseEntity<>("Item actualizado exitosamente", HttpStatus.ACCEPTED);
