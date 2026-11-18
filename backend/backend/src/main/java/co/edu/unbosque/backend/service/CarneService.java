@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import co.edu.unbosque.backend.dto.CarneDTO;
 import co.edu.unbosque.backend.model.Carne;
-import co.edu.unbosque.backend.model.Lacteo;
 import co.edu.unbosque.backend.repository.CarneRepository;
 import co.edu.unbosque.backend.util.AESUtil;
 
@@ -48,19 +47,9 @@ public class CarneService implements CRUDOperation<CarneDTO> {
 		return 0;
 	}
 
-	@Override
-	public List<CarneDTO> getAll() {
-		return itemRepo.findAll().stream().map(this::toDTO).toList();
-	}
+	
 
-	/** Busqueda por nombre exacto (con datos cifrados no se puede buscar por partes). */
-	public List<CarneDTO> searchByNombre(String nombre) {
-		return itemRepo.findByNombre(AESUtil.encrypt(nombre)).stream().map(this::toDTO).toList();
-	}
-
-	public CarneDTO getById(Long id) {
-		return itemRepo.findById(id).map(this::toDTO).orElse(null);
-	}
+	
 
 	@Override
 	public int deleteById(Long id) {
@@ -75,6 +64,11 @@ public class CarneService implements CRUDOperation<CarneDTO> {
 	/**
 	 * @return 0 actualizado, 1 datos invalidos, 2 no encontrado
 	 */
+	@Override
+	public List<CarneDTO> getAll() {
+		return itemRepo.findAll().stream().map(this::toDTO).toList();
+	}
+	
 	@Override
 	public int updateById(Long id, CarneDTO newData) {
 		Optional<Carne> found = itemRepo.findById(id);
@@ -103,10 +97,12 @@ public class CarneService implements CRUDOperation<CarneDTO> {
 	}
 
 	/** Entidad (cifrada) -> DTO (descifrado). */
-	private CarneDTO toDTO(Lacteo entity) {
+	private CarneDTO toDTO(Carne entity) {
 		CarneDTO dto = modelMapper.map(entity, CarneDTO.class);
 		dto.setNombre(AESUtil.decrypt(entity.getNombre()));
 		return dto;
 	}
+
+	
 
 }
