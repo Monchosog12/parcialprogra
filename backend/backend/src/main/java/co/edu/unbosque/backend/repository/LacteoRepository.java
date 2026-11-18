@@ -1,9 +1,20 @@
 package co.edu.unbosque.backend.repository;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import co.edu.unbosque.backend.model.User;
+import co.edu.unbosque.backend.model.Lacteo;
 
-public interface LacteoRepository extends JpaRepository<User, Long> {
+public interface LacteoRepository extends JpaRepository<Lacteo, Long> {
 
+	public Optional<Lacteo> findByUsername(String username);
+
+	public boolean existsByUsername(String username);
+
+	public void deleteByUsername(String username);
+	public List<Lacteo> findByNombre(String nombre);
+
+	public void deleteByNombre(String nombre);
 }
