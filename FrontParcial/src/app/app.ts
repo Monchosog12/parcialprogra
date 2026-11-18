@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { Navbarcomponent } from './navbarcomponent/navbarcomponent';
-import { Footercomponent } from './footercomponent/footercomponent';
-import { Contenidocomponent } from './contenidocomponent/contenidocomponent';
+import { Navbarcomponent } from './components/navbarcomponent/navbarcomponent';
+import { Footercomponent } from './components/footercomponent/footercomponent';
+import { Contenidocomponent } from './components/contenidocomponent/contenidocomponent';
 
 @Component({
   selector: 'app-root',
