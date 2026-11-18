@@ -25,6 +25,7 @@ public class ExternalHTTPRequestHandler {
 			.connectTimeout(Duration.ofSeconds(10)).build();
 
 	private static final Gson GSON = new GsonBuilder().create();
+	private static final String API_KEY_FOOD_DATA_CENTRAL = System.getenv("OPENROUTER_API_KEY_COHERE_MINI_CODE");
 
 	private ExternalHTTPRequestHandler() {
 	}
@@ -41,23 +42,23 @@ public class ExternalHTTPRequestHandler {
 	}
 
 	/** GET y convierte el JSON a un objeto (DTO). */
-	public static <T> T doGetAndConvert(String url, Class<T> clase) {
-		return GSON.fromJson(doGetRaw(url), clase);
+	public static <T> T doGetAndConvert(String url, String json, String apiKey, Class<T> clase) {
+		return GSON.fromJson(doGetRaw(url, json, apiKey), clase);
 	}
 
 	/** GET y convierte un arreglo JSON a lista de DTOs. */
-	public static <T> List<T> doGetAndConvertList(String url, Class<T> clase) {
-		return GSON.fromJson(doGetRaw(url), TypeToken.getParameterized(List.class, clase).getType());
+	public static <T> List<T> doGetAndConvertList(String url, String json, String apiKey, Class<T> clase) {
+		return GSON.fromJson(doGetRaw(url, json, apiKey), TypeToken.getParameterized(List.class, clase).getType());
 	}
 
-	public static String doGetRaw(String url) {
+	public static String doGetRaw(String url, String json, String apiKey) {
 		HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url))
-				.header("Accept", "application/json").build();
+				.header("Accept", "application/json").setHeader("Authorization", "Bearer " + apiKey).build();
 		return send(request).body();
 	}
 
-	public static String doGet(String url) {
-		return prettyPrintUsingGson(doGetRaw(url));
+	public static String doGet(String url, String json, String apiKey) {
+		return prettyPrintUsingGson(doGetRaw(url, json, apiKey));
 	}
 
 	public static String doPost(String url, String json) {
@@ -82,5 +83,10 @@ public class ExternalHTTPRequestHandler {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		return gson.toJson(JsonParser.parseString(uglyJson));
 	}
+	
+	
+	
+	// Lacteo
+	
 
 }
