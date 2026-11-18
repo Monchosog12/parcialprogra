@@ -17,7 +17,8 @@ import com.google.gson.reflect.TypeToken;
  * Utilidad para consumir APIs externas (por si el parcial lo pide). Ejemplo:
  *
  * FactDTO f = ExternalHTTPRequestHandler.doGetAndConvert(url, FactDTO.class);
- * List<FactDTO> l = ExternalHTTPRequestHandler.doGetAndConvertList(url, FactDTO.class);
+ * List<FactDTO> l = ExternalHTTPRequestHandler.doGetAndConvertList(url,
+ * FactDTO.class);
  */
 public class ExternalHTTPRequestHandler {
 
@@ -25,7 +26,24 @@ public class ExternalHTTPRequestHandler {
 			.connectTimeout(Duration.ofSeconds(10)).build();
 
 	private static final Gson GSON = new GsonBuilder().create();
-	private static final String API_KEY_FOOD_DATA_CENTRAL = System.getenv("OPENROUTER_API_KEY_COHERE_MINI_CODE");
+	private static final String API_KEY_FOOD_DATA_CENTRAL = System.getenv("API_KEY_FOOD_DATA_CENTRAL");
+	private static final String URL_BASE = "https://api.nal.usda.gov/fdc/v1/food";
+
+	public static HttpClient getHttpClient() {
+		return HTTP_CLIENT;
+	}
+
+	public static Gson getGson() {
+		return GSON;
+	}
+
+	public static String getApiKeyFoodDataCentral() {
+		return API_KEY_FOOD_DATA_CENTRAL;
+	}
+
+	public static String getUrlBase() {
+		return URL_BASE;
+	}
 
 	private ExternalHTTPRequestHandler() {
 	}
@@ -52,8 +70,8 @@ public class ExternalHTTPRequestHandler {
 	}
 
 	public static String doGetRaw(String url, String json, String apiKey) {
-		HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url))
-				.header("Accept", "application/json").setHeader("Authorization", "Bearer " + apiKey).build();
+		HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url)).header("Accept", "application/json")
+				.setHeader("Authorization", "Bearer " + apiKey).build();
 		return send(request).body();
 	}
 
@@ -83,10 +101,7 @@ public class ExternalHTTPRequestHandler {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		return gson.toJson(JsonParser.parseString(uglyJson));
 	}
-	
-	
-	
+
 	// Lacteo
-	
 
 }
