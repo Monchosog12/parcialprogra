@@ -20,25 +20,43 @@ export class Logincomponent {
     private router: Router,
   ) {}
 
+
+
   iniciarSesion(): void {
+
     const datos = {
       username: this.username,
-      password: this.password,
+      password: this.password
     };
 
     this.authService.login(datos).subscribe({
+
       next: (respuesta) => {
+
         console.log('Login exitoso');
         console.log('Token:', respuesta.token);
         console.log('Rol:', respuesta.roles);
 
-        this.router.navigate(['/contenido']);
+        if (respuesta.roles === 'ADMIN') {
+
+          this.router.navigate(['/admin']);
+
+        } else {
+
+          this.router.navigate(['/contenido']);
+
+        }
+
       },
 
       error: (error) => {
-        console.log('Error al iniciar sesión', error);
+
+        console.error('Error al iniciar sesión:', error);
         alert('Usuario o contraseña incorrectos');
-      },
+
+      }
+
     });
+
   }
 }

@@ -1,1 +1,205 @@
-<p>admincomponent works!</p>
+
+<div class="admin-container">
+
+  <header class="admin-header">
+    <div>
+      <h1>Panel de Administración</h1>
+      <p>Gestiona los productos de tu inventario</p>
+    </div>
+
+    <div class="total-items">
+      <span>Total de productos</span>
+      <strong>{{ items.length }}</strong>
+    </div>
+  </header>
+
+
+  <section class="form-card">
+
+    <h2>
+      {{ editando ? 'Editar producto' : 'Registrar nuevo producto' }}
+    </h2>
+
+    <form #formulario="ngForm" (ngSubmit)="guardar()">
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label for="nombre">Nombre del producto</label>
+          <input
+            id="nombre"
+            type="text"
+            name="nombre"
+            [(ngModel)]="item.nombre"
+            placeholder="Ej. Leche"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="descripcion">Descripción</label>
+          <input
+            id="descripcion"
+            type="text"
+            name="descripcion"
+            [(ngModel)]="item.descripcion"
+            placeholder="Descripción del producto"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="precio">Precio</label>
+          <input
+            id="precio"
+            type="number"
+            name="precio"
+            [(ngModel)]="item.precio"
+            placeholder="0"
+            min="0"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="cantidad">Cantidad</label>
+          <input
+            id="cantidad"
+            type="number"
+            name="cantidad"
+            [(ngModel)]="item.cantidad"
+            placeholder="0"
+            min="0"
+            required
+          >
+        </div>
+
+        <div class="form-group full-width">
+          <label for="fecha">Fecha</label>
+          <input
+            id="fecha"
+            type="date"
+            name="fecha"
+            [(ngModel)]="item.fecha"
+            required
+          >
+        </div>
+
+      </div>
+
+      <div class="form-buttons">
+
+        <button
+          type="submit"
+          class="btn-primary"
+          [disabled]="formulario.invalid"
+        >
+          {{ editando ? 'Guardar cambios' : 'Registrar producto' }}
+        </button>
+
+        <button
+          type="button"
+          class="btn-secondary"
+          (click)="limpiar()"
+        >
+          {{ editando ? 'Cancelar edición' : 'Limpiar formulario' }}
+        </button>
+
+      </div>
+
+    </form>
+
+  </section>
+
+  <!-- TABLA DE PRODUCTOS -->
+  <section class="table-card">
+
+    <div class="table-header">
+      <div>
+        <h2>Inventario de productos</h2>
+        <p>Productos registrados en el sistema</p>
+      </div>
+
+      <button
+        type="button"
+        class="btn-refresh"
+        (click)="listar()"
+      >
+        Actualizar lista
+      </button>
+    </div>
+
+    <!-- SI NO HAY PRODUCTOS -->
+    <div class="empty-state" *ngIf="items.length === 0">
+      <h3>No hay productos registrados</h3>
+      <p>Utiliza el formulario para registrar tu primer producto.</p>
+    </div>
+
+    <!-- TABLA -->
+    <div class="table-responsive" *ngIf="items.length > 0">
+
+      <table>
+
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Precio</th>
+          <th>Cantidad</th>
+          <th>Fecha</th>
+          <th>Acciones</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr *ngFor="let registro of items">
+
+          <td>{{ registro.id }}</td>
+
+          <td class="product-name">
+            {{ registro.nombre }}
+          </td>
+
+          <td>{{ registro.descripcion }}</td>
+
+          <td>
+            {{ registro.precio | currency:'COP':'symbol':'1.0-0' }}
+          </td>
+
+          <td>{{ registro.cantidad }}</td>
+
+          <td>{{ registro.fecha }}</td>
+
+          <td class="actions">
+
+            <button
+              type="button"
+              class="btn-edit"
+              (click)="editar(registro)"
+            >
+              Editar
+            </button>
+
+            <button
+              type="button"
+              class="btn-delete"
+              (click)="eliminar(registro.id!)"
+            >
+              Eliminar
+            </button>
+
+          </td>
+
+        </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+</div>
