@@ -40,29 +40,7 @@ public class LacteoController {
 	public LacteoController() {
 	}
 
-	/**
-	 * Busca lacteos por nombre en FoodData Central (USDA). Solo devuelve
-	 * alimentos de la categoria "Dairy and Egg Products". Ej:
-	 * /lacteo/external/search?query=cheese
-	 */
-	@GetMapping("/external/search")
-	ResponseEntity<List<FoodDTO>> searchExternal(@RequestParam String query,
-			@RequestParam(defaultValue = "10") int pageSize) {
-		if (query.isBlank()) {
-			return new ResponseEntity<>(List.of(), HttpStatus.BAD_REQUEST);
-		}
-		int size = Math.max(1, Math.min(pageSize, 50));
-		try {
-			List<FoodDTO> foods = ExternalHTTPRequestHandler.searchFoods(query, size,
-					ExternalHTTPRequestHandler.CATEGORIAS_LACTEO);
-			if (foods.isEmpty()) {
-				return new ResponseEntity<>(foods, HttpStatus.NO_CONTENT);
-			}
-			return new ResponseEntity<>(foods, HttpStatus.ACCEPTED);
-		} catch (RuntimeException e) {
-			return new ResponseEntity<>(List.of(), HttpStatus.BAD_GATEWAY);
-		}
-	}
+	
 
 	@PostMapping(path = "/createjson", consumes = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<String> createNewWithJSON(@RequestBody LacteoDTO newItem) {
